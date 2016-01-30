@@ -13,7 +13,7 @@ OUT := out/
 
 APP_NAME := out/hex_decode
 
-.PHONY: all strict
+.PHONY: all strict clean run memcheck_run test
 
 all: clean $(APP_NAME)
 
@@ -23,6 +23,7 @@ strict: clean memcheck_run
 
 clean:
 	rm -rf $(APP_NAME) $(APP_NAME).dSYM
+	rm test/testinput test/testoutput
 
 $(APP_NAME): $(DEP_FILES)
 	mkdir -p $(dir $@)
@@ -31,10 +32,14 @@ $(APP_NAME): $(DEP_FILES)
 run: $(APP_NAME)
 	./$(APP_NAME)
 
-memcheck_run: $(APP_NAME)
-	valgrind ./$(APP_NAME)
+memcheck_run: $(APP_NAME) test/testinput
+	cat test/testinput | valgrind ./$(APP_NAME)
 
-TEST_DATA := "\#"
+test/testinput:
+	node test/gendata.js
 
-test: $(APP_NAME)
-	echo $(TEST_DATA) | valgrind ./$(APP_NAME)
+test/testoutput:
+	node test/gendata.js
+
+test: $(APP_NAME) test/testinput test/testoutput
+	cat test/testinput | ./$(APP_NAME) | diff test/testoutput -

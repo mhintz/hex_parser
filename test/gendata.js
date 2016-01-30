@@ -17,7 +17,10 @@ function l(n) {
   return a;
 }
 
-let randnums = l(60 * 60).map(() => c());
+let width = 60;
+let height = 60;
+
+let randnums = l(width * height).map(() => c());
 
 let hexstring = randnums.join('') + '.';
 
@@ -25,7 +28,15 @@ function d(s) { return parseInt(s, 16); }
 
 let rgbstring = randnums.map((n) => {
   return [d(n.slice(1, 3)), d(n.slice(3, 5)), d(n.slice(5, 7))].join(',');
-}).join(' ') + ' ';
+}).reduce((grid, color, i) => {
+  let row = Math.floor(i / width);
+  let col = i % width;
+  if (!grid[row]) grid[row] = [];
+  grid[row][col] = color;
+  return grid;
+}, [])
+.map((r) => r.join(' ') + ' ')
+.join('\n') + '\n';
 
 let fs = require('fs');
 

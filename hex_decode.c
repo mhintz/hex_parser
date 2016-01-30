@@ -83,14 +83,14 @@ void print_buffer(Buffer * const the_buf) {
 	for (int y = 0; y < SCREEN_HEIGHT; y++) {
 		for (int x = 0; x < SCREEN_WIDTH; x++) {
 			usize i = (y * SCREEN_WIDTH + x) * 3;
-			printf("%u,%u,%u ", the_buf->data[i], the_buf->data[i + 1], the_buf->data[i + 2]);
+			fprintf(stdout, "%u,%u,%u ", the_buf->data[i], the_buf->data[i + 1], the_buf->data[i + 2]);
 		}
+		fprintf(stdout, "\n");
 	}
 }
 
 // Should send the buffer to the screen
 void send_buffer_to_screen(Buffer * the_buf) {
-	println("Got sent a screen buffer %p", the_buf);
 	print_buffer(the_buf);
 }
 
