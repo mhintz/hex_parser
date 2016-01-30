@@ -1,0 +1,3 @@
+[submodule "bstrlib"]
+	path = bstrlib
+	url = git@github.com:websnarf/bstrlib.git
