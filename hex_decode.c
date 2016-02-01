@@ -12,7 +12,6 @@
 #include "zed/debug.h"
 
 #define println(MSG, ...) printf(MSG "\n", ##__VA_ARGS__)
-#define free_if(PTR) if (PTR) free(PTR) 
 
 #define SYMBOLS_PER_COLOR 6 // Six characters per hex code
 #define PIX_SIZE 3
@@ -51,14 +50,14 @@ Buffer * make_buffer(usize byte_count) {
 	return the_buf;
 
 error:
-	free_if(the_buf->data);
-	free_if(the_buf);
+	free(the_buf->data);
+	free(the_buf);
 	return NULL;
 }
 
 void destroy_buffer(Buffer * the_buf) {
-	free_if(the_buf->data);
-	free_if(the_buf);
+	free(the_buf->data);
+	free(the_buf);
 }
 
 u8 * buffer_ptr_at(Buffer * the_buf, usize position) {
